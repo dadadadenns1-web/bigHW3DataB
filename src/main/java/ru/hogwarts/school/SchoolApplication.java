@@ -1,4 +1,3 @@
-//В качестве группы и артефакта проекта можно использовать следующие значения: groupId — ru.hogwarts, artefact — school.
 package ru.hogwarts.school;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
