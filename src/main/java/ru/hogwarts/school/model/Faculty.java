@@ -22,7 +22,7 @@ public class Faculty {
         this.color = color;
     }
 
-    //Без дефолт конструктора выдаст ошибку
+    //Без дефолт конструктора выдаст ошибку.
     public Faculty() {
     }
 
