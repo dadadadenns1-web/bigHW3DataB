@@ -1,8 +1,7 @@
 package ru.hogwarts.school.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -15,18 +14,27 @@ public class Student {
     private String name;
     private int age;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
+
     public Student(long id, String name, int age) {
         this.id = id;
         this.name = name;
         this.age = age;
     }
 
-    //Без дефолт конструктора выдаст ошибку
+    //Без дефолтного конструктора выдаст ошибку
     public Student() {
     }
 
     public long getId() {
         return id;
+    }
+
+    @JsonIgnore
+    public Faculty getFaculty() {
+        return faculty;
     }
 
     public String getName() {
@@ -37,10 +45,6 @@ public class Student {
         return age;
     }
 
-    //Не проверено что сделает с БД
-//    public void setId(long id) {
-//        this.id = id;
-//    }
 
     public void setName(String name) {
         this.name = name;

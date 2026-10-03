@@ -1,9 +1,9 @@
 package ru.hogwarts.school.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +15,8 @@ public class Faculty {
     private String name;
     private String color;
 
+    @OneToMany(mappedBy = "faculty")
+    private Collection<Student> studentList;
 
     public Faculty(long id, String name, String color) {
         this.id = id;
@@ -22,10 +24,14 @@ public class Faculty {
         this.color = color;
     }
 
-    //Без дефолт конструктора выдаст ошибку
+    //Без дефолтного конструктора выдаст ошибку.
     public Faculty() {
     }
 
+    @JsonIgnore
+    public Collection<Student> getAllStudents() {
+        return studentList;
+    }
     public long getId() {
         return id;
     }
@@ -38,10 +44,6 @@ public class Faculty {
         return color;
     }
 
-    //Не проверено что сделает с БД
-//    public void setId(long id) {
-//        this.id = id;
-//    }
 
     public void setName(String name) {
         this.name = name;

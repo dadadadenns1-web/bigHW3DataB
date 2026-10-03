@@ -2,11 +2,11 @@ package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.Collections;
 
 
 @Service
@@ -19,13 +19,22 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Collection<Student> getStudentCollection(Integer age) {
-        if (age != null && age < 0) {
-            return Collections.emptyList();
+    public Collection<Student> getStudentCollection() {
+        return studentRepository.findAll();
+    }
+
+    public Collection<Student> getStudentsByAgeRange(int min, int max) {
+        if (min > max) {
+            return null;
+        }
+        return studentRepository.findByAgeBetween(min, max);
+    }
+
+    public Faculty getFacultyById(long id) {
+        if (studentRepository.existsById(id)) {
+            return studentRepository.getReferenceById(id).getFaculty();
         } else {
-            return studentRepository.findAll().stream().filter(s ->
-                    (age == null || s.getAge() == age)
-            ).toList();
+            return null;
         }
     }
 
@@ -38,18 +47,18 @@ public class StudentService {
     }
 
     public Boolean deleteStudent(long id) {
-        if(studentRepository.existsById(id)){
+        if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
     public Student updateStudent(Student student) {
-        if(studentRepository.existsById(student.getId())){
+        if (studentRepository.existsById(student.getId())) {
             return studentRepository.save(student);
-        }else{
+        } else {
             return null;
         }
     }
