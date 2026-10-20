@@ -1,12 +1,14 @@
 package ru.hogwarts.school.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
+@JsonIgnoreProperties({"allStudents", "hibernateLazyInitializer"})
 public class Faculty {
 
     @Id
@@ -16,22 +18,27 @@ public class Faculty {
     private String color;
 
     @OneToMany(mappedBy = "faculty")
-    private Collection<Student> studentList;
+    private Collection<Student> studentList = new ArrayList<>();
 
-    public Faculty(long id, String name, String color) {
-        this.id = id;
+    public Faculty(String name, String color) {
         this.name = name;
         this.color = color;
+    }
+
+    public Faculty(String name, String color, long id, Collection<Student> studentList) {
+        this(name, color);
+        this.id = id;
+        this.studentList.addAll(studentList);
     }
 
     //Без дефолтного конструктора выдаст ошибку.
     public Faculty() {
     }
 
-    @JsonIgnore
     public Collection<Student> getAllStudents() {
         return studentList;
     }
+
     public long getId() {
         return id;
     }
@@ -44,6 +51,10 @@ public class Faculty {
         return color;
     }
 
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;

@@ -24,17 +24,17 @@ public class FacultyController {
     }
 
     @GetMapping("/search")
-    ResponseEntity<Collection<Faculty>> getFacultyByNameOrColor(@RequestParam(required = false) String name, @RequestParam(required = false) String color){
+    ResponseEntity<Collection<Faculty>> getFacultyByNameOrColor(@RequestParam(required = false) String name, @RequestParam(required = false) String color) {
         Collection<Faculty> maybeFaculties = facultyService.getFacultyByNameOrColor(name, color);
-        if(maybeFaculties == null){
+        if (maybeFaculties == null) {
             return ResponseEntity.badRequest().build();
-        }else{
+        } else {
             return ResponseEntity.ok(maybeFaculties);
         }
     }
 
     @GetMapping({"{id}/students"})
-    ResponseEntity<Collection<Student>> getAllStudentsById(@PathVariable long id){
+    ResponseEntity<Collection<Student>> getAllStudentsById(@PathVariable long id) {
         return ResponseEntity.ofNullable(facultyService.getAllStudentsByFacultyId(id));
     }
 
@@ -45,7 +45,7 @@ public class FacultyController {
 
     @PostMapping()
     Faculty addNewFaculty(@RequestBody Faculty faculty) {
-        return facultyService.addNewFaculty(faculty);
+        return facultyService.save(faculty);
     }
 
     @DeleteMapping("{id}")
@@ -63,7 +63,7 @@ public class FacultyController {
         if (updatedFaculty != null) {
             return ResponseEntity.ok(updatedFaculty);
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
     }
 

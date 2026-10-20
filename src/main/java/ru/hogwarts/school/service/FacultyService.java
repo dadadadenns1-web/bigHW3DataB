@@ -40,21 +40,23 @@ public class FacultyService {
         return facultyRepository.findById(id).orElse(null);
     }
 
-    public Collection<Student> getAllStudentsByFacultyId(long id){
-        if(facultyRepository.existsById(id)){
+    public Collection<Student> getAllStudentsByFacultyId(long id) {
+        if (facultyRepository.existsById(id)) {
             return facultyRepository.getReferenceById(id).getAllStudents();
-        }else{
+        } else {
             return null;
         }
     }
 
-    public Faculty addNewFaculty(Faculty faculty) {
+    public Faculty save(Faculty faculty) {
         facultyRepository.save(faculty);
         return faculty;
     }
 
     public Boolean deleteFaculty(long id) {
-        if (facultyRepository.existsById(id)) {
+        Faculty facultyToDelete = facultyRepository.findById(id).orElse(null);
+        if (facultyToDelete != null) {
+            facultyToDelete.getAllStudents().forEach(s -> s.setFaculty(null));
             facultyRepository.deleteById(id);
             return true;
         } else {
@@ -70,4 +72,11 @@ public class FacultyService {
         }
     }
 
+    public void deleteByNameContains(String substring) {
+        facultyRepository.deleteByNameContains(substring);
+    }
+
+    public boolean existsByNameContains(String substring) {
+        return facultyRepository.existsByNameContains(substring);
+    }
 }

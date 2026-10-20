@@ -1,6 +1,5 @@
 package ru.hogwarts.school.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -18,10 +17,15 @@ public class Student {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
-    public Student(long id, String name, int age) {
-        this.id = id;
+
+    public Student(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public Student(String name, int age, long id) {
+        this(name, age);
+        this.id = id;
     }
 
     //Без дефолтного конструктора выдаст ошибку
@@ -32,7 +36,6 @@ public class Student {
         return id;
     }
 
-    @JsonIgnore
     public Faculty getFaculty() {
         return faculty;
     }
@@ -45,6 +48,9 @@ public class Student {
         return age;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -52,6 +58,10 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     @Override
