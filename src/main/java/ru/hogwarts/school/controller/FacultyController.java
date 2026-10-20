@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
@@ -18,8 +19,23 @@ public class FacultyController {
     }
 
     @GetMapping()
-    Collection<Faculty> getFacultyCollection(@RequestParam(required = false) String color) {
-        return facultyService.getFacultyCollection(color);
+    Collection<Faculty> getFacultyCollection() {
+        return facultyService.getFacultyCollection();
+    }
+
+    @GetMapping("/search")
+    ResponseEntity<Collection<Faculty>> getFacultyByNameOrColor(@RequestParam(required = false) String name, @RequestParam(required = false) String color) {
+        Collection<Faculty> maybeFaculties = facultyService.getFacultyByNameOrColor(name, color);
+        if (maybeFaculties == null) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            return ResponseEntity.ok(maybeFaculties);
+        }
+    }
+
+    @GetMapping({"{id}/students"})
+    ResponseEntity<Collection<Student>> getAllStudentsById(@PathVariable long id) {
+        return ResponseEntity.ofNullable(facultyService.getAllStudentsByFacultyId(id));
     }
 
     @GetMapping("{id}")
@@ -29,7 +45,7 @@ public class FacultyController {
 
     @PostMapping()
     Faculty addNewFaculty(@RequestBody Faculty faculty) {
-        return facultyService.addNewFaculty(faculty);
+        return facultyService.save(faculty);
     }
 
     @DeleteMapping("{id}")
@@ -47,7 +63,7 @@ public class FacultyController {
         if (updatedFaculty != null) {
             return ResponseEntity.ok(updatedFaculty);
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
         }
     }
 
