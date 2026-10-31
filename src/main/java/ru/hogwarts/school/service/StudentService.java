@@ -28,6 +28,24 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public long getStudentListSize(){
+        return  studentRepository.getStudentListSize();
+    }
+
+    //До 2 цифр после запятой
+    public float getAverageAge(){
+        Float averageAge = studentRepository.getAverageAge();
+        if(averageAge == null){
+            return 0f;
+        }else {
+            return (int) (averageAge * 100f) / 100f;
+        }
+    }
+
+    public Collection<Student> getLastFiveStudents(){
+        return  studentRepository.findLastFiveStudents();
+    }
+
     public Collection<Student> getStudentsByAgeRange(int min, int max) {
         if (min > max) {
             return null;

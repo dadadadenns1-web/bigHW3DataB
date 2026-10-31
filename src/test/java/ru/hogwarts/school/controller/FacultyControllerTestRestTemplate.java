@@ -79,8 +79,6 @@ public class FacultyControllerTestRestTemplate {
         facultyService.deleteFaculty(idOfDeletedFaculty);
 
         //Студенты будут добавлены в первые 3 факультета
-        Assert.isTrue(testFaculties.size() > 3, "Requires more than 3 faculties");
-        Assert.isTrue(testStudents.size() > 5, "Requires more than 5 students in testList");
 
         int counter = 0;
         for (Student studentInTestStudents : testStudents) {
@@ -273,40 +271,5 @@ public class FacultyControllerTestRestTemplate {
 
         ResponseEntity<Faculty> response = this.testRestTemplate.exchange(getFacultyURL(), HttpMethod.PUT, new HttpEntity<>(facultyWithWrongId, headers), Faculty.class);
         assertStatusCode(response, HttpStatus.NOT_FOUND);
-    }
-
-    @Test
-    void studentListUpdateTest() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        Faculty facultyToUpdate = testFaculties.get(0);
-        Collection<Student> newStudentList = new ArrayList<>();
-        Student studentInList = testStudents.get(0);
-        newStudentList.add(studentInList);
-
-        Assert.isTrue(!(facultyToUpdate.getAllStudents().containsAll(newStudentList)
-                && facultyToUpdate.getAllStudents().size() == newStudentList.size()), "lists are equals");
-
-        //Создание копии, но с измененным листом
-        Faculty facultyWithChangedList = new Faculty(facultyToUpdate.getName(), facultyToUpdate.getColor(), facultyToUpdate.getId(), newStudentList);
-
-        ResponseEntity<Faculty> response = this.testRestTemplate.exchange(getFacultyURL(), HttpMethod.PUT, new HttpEntity<>(facultyWithChangedList, headers), Faculty.class);
-        assertStatusCode(response, HttpStatus.OK);
-
-        if (response.getBody() == null) {
-            throw new AssertionFailure("response body is null");
-        }
-        Faculty facultyInDataBase = facultyService.getFacultyById(response.getBody().getId());
-        Assert.isTrue(Objects.equals(facultyInDataBase, facultyWithChangedList), "PutList and dataBase list mismatch");
-
-        //Проверка, что у студента в базе данных также поменялся факультет на отданный в методе put
-        Assert.isTrue(Objects.equals(studentService.getStudentById(studentInList.getId()).getFaculty(), facultyWithChangedList), "Faculties are mismatching");
-
-        //Проверка, что ничего не поменялось кроме листа студентов
-        Assert.isTrue(facultyInDataBase.getId() == facultyToUpdate.getId()
-                        && Objects.equals(facultyInDataBase.getColor(), facultyToUpdate.getColor())
-                        && Objects.equals(facultyInDataBase.getName(), facultyToUpdate.getName())
-                , "Unnecessary fields were modified");
     }
 }

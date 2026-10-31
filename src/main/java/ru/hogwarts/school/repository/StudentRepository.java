@@ -1,7 +1,6 @@
 package ru.hogwarts.school.repository;
 
 import jakarta.transaction.Transactional;
-import org.jspecify.annotations.NonNull;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -31,5 +30,14 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Modifying
     @Query("update Student s set s.faculty = ?1 where s.id = ?2")
     int updateFacultyById(Faculty faculty, long id);
+
+    @Query("SELECT COUNT(*) FROM Student")
+    long getStudentListSize();
+
+    @Query("select avg(age) from Student")
+    Float getAverageAge();
+
+    @Query("from Student order by(id) desc limit 5")
+    Collection<Student> findLastFiveStudents();
 
 }

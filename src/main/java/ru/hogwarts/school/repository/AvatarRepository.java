@@ -1,10 +1,13 @@
 package ru.hogwarts.school.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.hogwarts.school.model.Avatar;
+import ru.hogwarts.school.model.AvatarWithIgnoredData;
 import ru.hogwarts.school.model.Student;
 
 public interface AvatarRepository extends JpaRepository<Avatar, Long> {
@@ -18,6 +21,9 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
 
 
     Avatar findByStudent_Id(long id);
+
+
+    Page<AvatarWithIgnoredData> findAllBy(Pageable pageable);
 
 
 }

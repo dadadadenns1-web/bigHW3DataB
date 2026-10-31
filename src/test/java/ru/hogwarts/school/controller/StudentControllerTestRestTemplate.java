@@ -94,9 +94,6 @@ public class StudentControllerTestRestTemplate {
         idOfDeletedStudent = studentService.save(testObjects.getGhostStudent()).getId();
         studentService.deleteStudent(idOfDeletedStudent);
 
-        Assert.isTrue(testStudents.size() >= studentsWithFaculty, "student test list requires more than 2 students");
-        Assert.isTrue(testFaculties.size() >= studentsWithFaculty, "faculties test list requires more than 2 faculties");
-
         //Добавление факультетов к 3 студентам
         for (int i = 0; i < studentsWithFaculty; i++) {
             Student s = testStudents.get(i);

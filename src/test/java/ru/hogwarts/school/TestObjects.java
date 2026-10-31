@@ -9,6 +9,7 @@ import java.util.UUID;
 public class TestObjects {
 
 
+    //требуется не менее 5 студентов для теста
     private final List<Student> studentTestList = List.of(
             new Student("Ivan", 15)
             , new Student("Tom", 19)
@@ -23,6 +24,7 @@ public class TestObjects {
 
     );
 
+    //Требуется не менее 4 факультетов для теста
     private final List<Faculty> facultyTestList = List.of(
             new Faculty("Geography", "Orange")
             , new Faculty("Math", "Blue")

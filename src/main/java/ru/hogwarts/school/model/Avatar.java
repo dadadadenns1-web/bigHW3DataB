@@ -3,7 +3,7 @@ package ru.hogwarts.school.model;
 import jakarta.persistence.*;
 
 @Entity
-public class Avatar {
+public class Avatar implements AvatarWithIgnoredData {
 
     @Id
     @GeneratedValue
@@ -49,5 +49,9 @@ public class Avatar {
     }
 
     public Avatar() {
+    }
+
+    public long getStudentId(){
+        return student.getId();
     }
 }

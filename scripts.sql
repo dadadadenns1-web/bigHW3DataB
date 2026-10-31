@@ -9,3 +9,9 @@ select * from public.student where name ~* 'о';
 select * from public.student where age < id;
 
 select * from public.student order by age;
+
+select count(*) from public.student
+
+select * from Student order by(id) desc limit 4
+
+

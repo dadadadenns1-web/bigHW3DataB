@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.exception.FileSizeException;
 import ru.hogwarts.school.model.Avatar;
+import ru.hogwarts.school.model.AvatarWithIgnoredData;
 import ru.hogwarts.school.service.AvatarService;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("avatar")
@@ -41,6 +43,12 @@ public class AvatarController {
             return ResponseEntity.status(413).body(e.getMessage());
         }
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/getAvatarsInPage")
+    @Transactional
+    public Collection<AvatarWithIgnoredData> getAllAvatarsInPage(@RequestParam int page, @RequestParam int size){
+        return avatarService.getAvatarPage(page, size);
     }
 
     @GetMapping(path = "/{student_id}")

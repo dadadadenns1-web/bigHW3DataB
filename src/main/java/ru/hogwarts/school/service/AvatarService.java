@@ -3,11 +3,13 @@ package ru.hogwarts.school.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.exception.FileSizeException;
 import ru.hogwarts.school.model.Avatar;
+import ru.hogwarts.school.model.AvatarWithIgnoredData;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.StudentRepository;
@@ -15,6 +17,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Optional;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -40,6 +43,11 @@ public class AvatarService {
 
     public Avatar findByStudent_Id(long id) {
         return avatarRepository.findByStudent_Id(id);
+    }
+
+    public Collection<AvatarWithIgnoredData> getAvatarPage(int page, int size){
+        PageRequest pageRequest = PageRequest.of(page - 1,size);
+        return avatarRepository.findAllBy(pageRequest).getContent();
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarMpFile) throws EntityNotFoundException, IOException, FileSizeException {

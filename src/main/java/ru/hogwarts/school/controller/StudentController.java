@@ -34,6 +34,21 @@ public class StudentController {
         }
     }
 
+    @GetMapping("/numberOfStudents")
+    long getStudentListSize(){
+        return studentService.getStudentListSize();
+    }
+
+    @GetMapping("/averageAge")
+    float getAverageAge(){
+        return studentService.getAverageAge();
+    }
+
+    @GetMapping("/lastFiveStudents")
+    Collection<Student> getLastFiveStudents(){
+        return studentService.getLastFiveStudents();
+    }
+
     @GetMapping({"{id}/faculty"})
     ResponseEntity<Faculty> getStudentFacultyById(@PathVariable long id) {
         return studentService.getFacultyById(id);
