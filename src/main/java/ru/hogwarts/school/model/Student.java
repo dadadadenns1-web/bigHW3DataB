@@ -1,8 +1,6 @@
 package ru.hogwarts.school.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -15,18 +13,31 @@ public class Student {
     private String name;
     private int age;
 
-    public Student(long id, String name, int age) {
-        this.id = id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
+
+
+    public Student(String name, int age) {
         this.name = name;
         this.age = age;
     }
 
-    //Без дефолт конструктора выдаст ошибку
+    public Student(String name, int age, long id) {
+        this(name, age);
+        this.id = id;
+    }
+
+    //Без дефолтного конструктора выдаст ошибку
     public Student() {
     }
 
     public long getId() {
         return id;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
     }
 
     public String getName() {
@@ -37,10 +48,9 @@ public class Student {
         return age;
     }
 
-    //Не проверено что сделает с БД
-//    public void setId(long id) {
-//        this.id = id;
-//    }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -48,6 +58,10 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
     @Override

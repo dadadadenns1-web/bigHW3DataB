@@ -1,12 +1,14 @@
 package ru.hogwarts.school.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
+@JsonIgnoreProperties({"allStudents", "hibernateLazyInitializer"})
 public class Faculty {
 
     @Id
@@ -15,15 +17,26 @@ public class Faculty {
     private String name;
     private String color;
 
+    @OneToMany(mappedBy = "faculty")
+    private Collection<Student> studentList = new ArrayList<>();
 
-    public Faculty(long id, String name, String color) {
-        this.id = id;
+    public Faculty(String name, String color) {
         this.name = name;
         this.color = color;
     }
 
-    //Без дефолт конструктора выдаст ошибку
+    public Faculty(String name, String color, long id, Collection<Student> studentList) {
+        this(name, color);
+        this.id = id;
+        this.studentList.addAll(studentList);
+    }
+
+    //Без дефолтного конструктора выдаст ошибку.
     public Faculty() {
+    }
+
+    public Collection<Student> getAllStudents() {
+        return studentList;
     }
 
     public long getId() {
@@ -38,10 +51,10 @@ public class Faculty {
         return color;
     }
 
-    //Не проверено что сделает с БД
-//    public void setId(long id) {
-//        this.id = id;
-//    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
