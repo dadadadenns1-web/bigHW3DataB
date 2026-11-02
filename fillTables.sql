@@ -12,3 +12,4 @@ INSERT INTO public.student (id, name, age, faculty_id) VALUES (4, 'Иван', 25
 INSERT INTO public.faculty (id, name, color) values (4,'Факультет математики','Синий');
 INSERT INTO public.student (id, name, age, faculty_id) VALUES (5, 'Тимофей', 20, 4);
 INSERT INTO public.student (id, name, age, faculty_id) VALUES (6, 'Павел', 18, 4);
+INSERT INTO public.student (id, name, age, faculty_id) VALUES (7, 'Дима', 15, 4);
