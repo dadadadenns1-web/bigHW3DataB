@@ -2,6 +2,7 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.exception.EntityNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
@@ -35,17 +36,17 @@ public class StudentController {
     }
 
     @GetMapping("/numberOfStudents")
-    long getStudentListSize(){
+    long getStudentListSize() {
         return studentService.getStudentListSize();
     }
 
     @GetMapping("/averageAge")
-    float getAverageAge(){
+    float getAverageAge() {
         return studentService.getAverageAge();
     }
 
     @GetMapping("/lastFiveStudents")
-    Collection<Student> getLastFiveStudents(){
+    Collection<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
 

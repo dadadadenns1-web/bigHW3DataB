@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,7 @@ public class AvatarService {
 
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
+    private static final Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
@@ -38,24 +41,32 @@ public class AvatarService {
     }
 
     public String getAvatarsDir() {
+        logger.info("Was invoked method getAvatarsDir()");
         return avatarsDir;
     }
 
     public Avatar findByStudent_Id(long id) {
+        logger.info("Was invoked method findByStudent_Id(long id = {})", id);
         return avatarRepository.findByStudent_Id(id);
     }
 
-    public Collection<AvatarWithIgnoredData> getAvatarPage(int page, int size){
-        PageRequest pageRequest = PageRequest.of(page - 1,size);
+    public Collection<AvatarWithIgnoredData> getAvatarPage(int page, int size) {
+        logger.info("Was invoked method getAvatarPage(int page = {}, int size = {})", page, size);
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
         return avatarRepository.findAllBy(pageRequest).getContent();
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarMpFile) throws EntityNotFoundException, IOException, FileSizeException {
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new EntityNotFoundException("Студент не найден по id - " + studentId));
-
+        logger.info("Was invoked method uploadAvatar(Long studentId = {}, MultipartFile avatarMpFile [size - {} KiB, content type - {}])", studentId, (avatarMpFile.getSize() / 1024), avatarMpFile.getContentType());
+        Student student = studentRepository.findById(studentId).orElse(null);
+        if (student == null) {
+            logger.error("Attempt to upload avatar for non-existent student, passed student id = {}", studentId);
+            throw new EntityNotFoundException("Студент не найден по id - " + studentId);
+        }
         long fileSize = avatarMpFile.getSize();
         var maxFileSize = 1024 * 300;
         if (fileSize > maxFileSize) {
+            logger.error("Attempt to upload avatar exceeding the maximum size {} KiB, avatar size = {} KiB", (maxFileSize / 1024), (fileSize / 1024));
             throw new FileSizeException("Максимальный размер файла " + (maxFileSize / 1024) + " KiB");
         }
 
