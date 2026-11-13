@@ -47,7 +47,7 @@ public class AvatarController {
 
     @GetMapping("/getAvatarsInPage")
     @Transactional
-    public Collection<AvatarWithIgnoredData> getAllAvatarsInPage(@RequestParam int page, @RequestParam int size){
+    public Collection<AvatarWithIgnoredData> getAllAvatarsInPage(@RequestParam int page, @RequestParam int size) {
         return avatarService.getAvatarPage(page, size);
     }
 

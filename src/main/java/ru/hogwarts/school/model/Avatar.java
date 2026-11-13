@@ -51,7 +51,7 @@ public class Avatar implements AvatarWithIgnoredData {
     public Avatar() {
     }
 
-    public long getStudentId(){
+    public long getStudentId() {
         return student.getId();
     }
 }

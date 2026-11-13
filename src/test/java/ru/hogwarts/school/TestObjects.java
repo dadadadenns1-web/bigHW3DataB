@@ -11,16 +11,16 @@ public class TestObjects {
 
     //требуется не менее 5 студентов для теста
     private final List<Student> studentTestList = List.of(
-            new Student("Ivan", 15)
+            new Student("Ivan", 17)
             , new Student("Tom", 19)
             , new Student("Alice", 30)
-            , new Student("Ivan", 24)
-            , new Student("Frank", 14)
+            , new Student("Zeus", 24)
+            , new Student("Frank", 19)
             , new Student("Peter", 26)
             , new Student("Sonya", 20)
             , new Student("Katya", 19)
             , new Student("John", 16)
-            , new Student("Adolf", 14)
+            , new Student("Adolf", 18)
 
     );
 

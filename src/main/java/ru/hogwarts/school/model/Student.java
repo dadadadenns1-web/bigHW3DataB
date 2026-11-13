@@ -75,4 +75,17 @@ public class Student {
     public int hashCode() {
         return Objects.hash(id, name, age);
     }
+
+    @Override
+    public String toString() {
+        Faculty faculty = this.getFaculty();
+        String returnString = "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age;
+        if (faculty != null) {
+            returnString = returnString + ", facultyId = " + faculty.getId();
+        }
+        return returnString + '}';
+    }
 }
