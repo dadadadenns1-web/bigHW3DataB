@@ -7,8 +7,11 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("student")
@@ -18,6 +21,21 @@ public class StudentController {
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
+    }
+
+    @GetMapping("/sort/startsWith/A")//Латинская
+    List<String> getStudentListNamesBeginWithLetterA(){
+       return studentService.getStudentList().stream()
+               .map(student -> student.getName().toUpperCase(Locale.ROOT))
+               .filter(upperCaseName -> upperCaseName.startsWith("A")) //Латинская
+               .sorted().toList(); //Лучше не использовать .parallel из-за sorted
+    }
+
+    @GetMapping("/averageAgeByStreamApi")
+    double getAverageAgeStreamApi(){
+        return studentService.getStudentList().stream().parallel()
+                .mapToInt(Student::getAge)
+                .average().orElse(0d);// суммирование идет параллельно и в слиянии, деление после.
     }
 
     @GetMapping()
@@ -83,5 +101,7 @@ public class StudentController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
 }
