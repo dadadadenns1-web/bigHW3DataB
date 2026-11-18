@@ -7,6 +7,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 @RestController
 @RequestMapping("faculty")
@@ -16,6 +17,13 @@ public class FacultyController {
 
     public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
+    }
+
+    @GetMapping("/names/longest")
+    String getLongestFacultyName(){
+        return facultyService.getFacultyCollection().stream().parallel()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length)).orElse(null);
     }
 
     @GetMapping()
