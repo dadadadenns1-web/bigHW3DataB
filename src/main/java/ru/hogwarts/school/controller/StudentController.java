@@ -2,19 +2,16 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.hogwarts.school.exception.EntityNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("student")
+@RequestMapping("students")
 public class StudentController {
 
     private final StudentService studentService;
@@ -22,6 +19,16 @@ public class StudentController {
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
+
+    @GetMapping("/print/parallel")
+    void printParallel(){studentService.printParallel();
+    }
+
+    @GetMapping("/print-synchronized")
+    void printSynchronized(){
+        studentService.printSynchronized();
+    }
+
 
     @GetMapping("/sort/startsWith/A")//Латинская
     List<String> getStudentListNamesBeginWithLetterA(){

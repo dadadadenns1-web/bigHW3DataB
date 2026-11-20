@@ -48,7 +48,7 @@ public class FacultyControllerTestRestTemplate {
 
 
     private String getFacultyURL() {
-        return "http://localhost:" + port + "/faculty";
+        return "http://localhost:" + port + "/faculties";
     }
 
     static <T> void assertStatusCode(ResponseEntity<T> response, HttpStatusCode httpStatusCode) {

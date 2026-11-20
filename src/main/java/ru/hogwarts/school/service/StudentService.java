@@ -1,12 +1,10 @@
 package ru.hogwarts.school.service;
 
-import ch.qos.logback.classic.spi.LoggerContextAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.hogwarts.school.exception.EntityNotFoundException;
 import ru.hogwarts.school.exception.EntityNotFoundRuntimeException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
@@ -15,7 +13,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.stream.IntStream;
 
 
 @Service
@@ -154,5 +152,33 @@ public class StudentService {
     public void deleteByNameContains(String substring) {
         logger.info("Was invoked method deleteByNameContains(String substring = {})", substring);
         studentRepository.deleteByNameContains(substring);
+    }
+
+    interface StudentPrinter {
+        void print(int... indices);
+    }
+
+    public void printParallel() {
+        List<Student> studentList = this.getStudentList();
+
+        StudentPrinter studentPrinter = indices -> IntStream.of(indices).forEach(i -> System.out.println(studentList.get(i).getName()));
+
+        new Thread(()-> studentPrinter.print(2,3)).start();
+        new Thread(()-> studentPrinter.print(4,5)).start();
+        studentPrinter.print(0,1);
+    }
+
+    public void printSynchronized() {
+        List<Student> studentList = this.getStudentList();
+        StudentPrinter studentPrinter = new StudentPrinter() {
+            @Override
+            public synchronized void print(int... indices) {
+                IntStream.of(indices).forEach(i -> System.out.println(studentList.get(i).getName()));
+            }
+        };
+
+        new Thread(()-> studentPrinter.print(2,3)).start();
+        new Thread(()-> studentPrinter.print(4,5)).start();
+        studentPrinter.print(0,1);
     }
 }

@@ -48,7 +48,7 @@ public class StudentControllerWebMvcTest {
         when(studentService.save(any(Student.class))).thenReturn(expectedStudent);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/student")
+                        .post("/students")
                         .content(studentObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -70,14 +70,14 @@ public class StudentControllerWebMvcTest {
 
         when(studentService.deleteStudent(rightId)).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/student/" + rightId)
+                        .delete("/students/" + rightId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()));
 
         when(studentService.deleteStudent(falseId)).thenReturn(false);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/student/" + falseId)
+                        .delete("/students/" + falseId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
@@ -97,7 +97,7 @@ public class StudentControllerWebMvcTest {
         when(studentService.updateStudent(expectedStudent)).thenReturn(expectedStudent);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/student")
+                        .put("/students")
                         .content(studentObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -109,7 +109,7 @@ public class StudentControllerWebMvcTest {
 
         when(studentService.updateStudent(expectedStudent)).thenReturn(null);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/student")
+                        .put("/students")
                         .content(studentObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -122,7 +122,7 @@ public class StudentControllerWebMvcTest {
         when(studentService.getStudentById(expectedStudent.getId())).thenReturn(expectedStudent);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/" + expectedStudent.getId())
+                        .get("/students/" + expectedStudent.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.id").value(expectedStudent.getId()))
@@ -147,7 +147,7 @@ public class StudentControllerWebMvcTest {
 
         when(studentService.getFacultyById(expectedStudent.getId())).thenReturn(response);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/" + expectedStudent.getId() + "/faculty")
+                        .get("/students/" + expectedStudent.getId() + "/faculty")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.id").value(expectedFaculty.getId()))
@@ -156,14 +156,14 @@ public class StudentControllerWebMvcTest {
         response = ResponseEntity.notFound().build();
         when(studentService.getFacultyById(expectedStudent.getId())).thenReturn(response);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/" + expectedStudent.getId() + "/faculty")
+                        .get("/students/" + expectedStudent.getId() + "/faculty")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 
         response = ResponseEntity.noContent().build();
         when(studentService.getFacultyById(expectedStudent.getId())).thenReturn(response);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/" + expectedStudent.getId() + "/faculty")
+                        .get("/students/" + expectedStudent.getId() + "/faculty")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.NO_CONTENT.value()));
 
@@ -177,7 +177,7 @@ public class StudentControllerWebMvcTest {
 
         when(studentService.getStudentList()).thenReturn(expectedCollection);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student")
+                        .get("/students")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.size()").value(expectedCollection.size()))
@@ -186,7 +186,7 @@ public class StudentControllerWebMvcTest {
         expectedCollection.clear();
         when(studentService.getStudentList()).thenReturn(expectedCollection);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student")
+                        .get("/students")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.size()").value(expectedCollection.size()))
@@ -203,7 +203,7 @@ public class StudentControllerWebMvcTest {
 
         when(studentService.getStudentsByAgeRange(minAge, maxAge)).thenReturn(expectedCollection);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/age?min=" + minAge + "&max=" + maxAge)
+                        .get("/students/age?min=" + minAge + "&max=" + maxAge)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.size()").value(expectedCollection.size()))
@@ -211,7 +211,7 @@ public class StudentControllerWebMvcTest {
 
         when(studentService.getStudentsByAgeRange(maxAge, minAge)).thenReturn(null);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student/age?min=" + maxAge + "&max=" + minAge)
+                        .get("/students/age?min=" + maxAge + "&max=" + minAge)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
     }

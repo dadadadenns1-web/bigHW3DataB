@@ -49,7 +49,7 @@ public class StudentControllerTestRestTemplate {
     private List<Faculty> testFaculties;
 
     private String getStudentURL() {
-        return "http://localhost:" + port + "/student";
+        return "http://localhost:" + port + "/students";
     }
 
     private long idOfDeletedStudent;
