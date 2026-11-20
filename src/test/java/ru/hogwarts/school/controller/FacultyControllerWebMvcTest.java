@@ -40,7 +40,7 @@ public class FacultyControllerWebMvcTest {
         when(facultyService.getFacultyById(expectedFaculty.getId())).thenReturn(expectedFaculty);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/" + expectedFaculty.getId())
+                        .get("/faculties/" + expectedFaculty.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.id").value(expectedFaculty.getId()))
@@ -50,7 +50,7 @@ public class FacultyControllerWebMvcTest {
         when(facultyService.getFacultyById(expectedFaculty.getId())).thenReturn(null);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/" + expectedFaculty.getId())
+                        .get("/faculties/" + expectedFaculty.getId())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
     }
@@ -68,7 +68,7 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyService.updateFaculty(expectedFaculty)).thenReturn(expectedFaculty);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/faculty")
+                        .put("/faculties")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -79,7 +79,7 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyService.updateFaculty(expectedFaculty)).thenReturn(null);
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/faculty")
+                        .put("/faculties")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -97,7 +97,7 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyService.save(any(Faculty.class))).thenReturn(expectedFaculty);
         mockMvc.perform(MockMvcRequestBuilders
-                        .post("/faculty")
+                        .post("/faculties")
                         .content(facultyObject.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -119,13 +119,13 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyService.deleteFaculty(rightId)).thenReturn(true);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/faculty/" + rightId)
+                        .delete("/faculties/" + rightId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()));
 
         when(facultyService.deleteFaculty(falseId)).thenReturn(false);
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/faculty/" + falseId)
+                        .delete("/faculties/" + falseId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
 
@@ -141,7 +141,7 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyService.getFacultyCollection()).thenReturn(facultyCollection);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty")
+                        .get("/faculties")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.size()").value(facultyCollection.size()))
@@ -149,7 +149,7 @@ public class FacultyControllerWebMvcTest {
 
         facultyCollection.clear();
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty")
+                        .get("/faculties")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.size()").value(facultyCollection.size()))
@@ -165,7 +165,7 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyService.getAllStudentsByFacultyId(facultyId)).thenReturn(expectedStudentList);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/" + facultyId + "/students")
+                        .get("/faculties/" + facultyId + "/students")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.size()").value(expectedStudentList.size()))
@@ -173,7 +173,7 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyService.getAllStudentsByFacultyId(facultyId)).thenReturn(null);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/" + facultyId + "/students")
+                        .get("/faculties/" + facultyId + "/students")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.NOT_FOUND.value()));
     }
@@ -188,7 +188,7 @@ public class FacultyControllerWebMvcTest {
         String colorToSearch = "Blue";
         when(facultyService.getFacultyByNameOrColor(nameToSearch, colorToSearch)).thenReturn(facultyCollection);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/search?name=" + nameToSearch + "&color=" + colorToSearch)
+                        .get("/faculties/search?name=" + nameToSearch + "&color=" + colorToSearch)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.size()").value(facultyCollection.size()))
@@ -196,7 +196,7 @@ public class FacultyControllerWebMvcTest {
 
         facultyCollection.clear();
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/search?name=" + nameToSearch + "&color=" + colorToSearch)
+                        .get("/faculties/search?name=" + nameToSearch + "&color=" + colorToSearch)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.OK.value()))
                 .andExpect(jsonPath("$.size()").value(facultyCollection.size()))
@@ -204,7 +204,7 @@ public class FacultyControllerWebMvcTest {
 
         when(facultyService.getFacultyByNameOrColor(" ", "")).thenReturn(null);
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/faculty/search?name= &color=")
+                        .get("/faculties/search?name= &color=")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
 

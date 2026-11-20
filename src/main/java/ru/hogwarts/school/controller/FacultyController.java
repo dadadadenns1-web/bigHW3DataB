@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Comparator;
 
 @RestController
-@RequestMapping("faculty")
+@RequestMapping("faculties")
 public class FacultyController {
 
     private final FacultyService facultyService;
